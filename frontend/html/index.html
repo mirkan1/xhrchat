@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta charset="utf-8">
+	<title>XHR Chat</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link
+		rel="stylesheet"
+		href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+		crossorigin="anonymous"
+	/>
+</head>
+<body>
+	<div class="container">
+		<div class="row" align="center">
+			<div class="col"></div>
+			<div class="col-xl-6 col-lg-6 col-md-9 col-sm-12">
+				<h1 class="center">XHR chat</h1>
+				<div id="settings-box" style="margin: 10px 0px;">
+					<br>
+					<br>
+					<label>Nickname:</label>
+					<input type="text" id="nickname" value="" style="width: 75%">
+					<button id="send-btn" onclick="check_msg()">join</button>
+				</div>
+		
+				<div id="fail-box"></div>
+				<div id="chat-box" style="
+					opacity: 0;
+					font-family: Verdana, sans-serif;
+					box-sizing: inherit;
+					display: block;
+					color: #000!important;
+					border: aqua;
+					background-color: #ddffff!important;
+					line-height: 1.5;
+					font-size: 15px;
+					padding: 0.01em 16px;
+					border-color: #2196F3!important;
+					border: 6px solid #ccc!important;
+					border-radius: 10px;
+					display: flex;
+					flex-direction: column;
+					align-items: flex-end;"
+				"></div>
+				<div id="message-box" style="opacity: 0; margin: 10px 0;">
+					<label>chat:</label>
+					<input type="text" id="msg" value="" style="width: 75%">
+					<button id="chat-btn" onclick="send_msg()">send</button>
+				</div>
+			</div>
+			<div class="col"></div>
+		</div>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> 
+	<script>
+		var userName = null;
+		
+		function changeTemplate() {
+			document.querySelector("#settings-box").remove();
+			messageBox = document.querySelector("#message-box");
+			messageBox.style.opacity = 1;
+		}
+
+		function send_msg() {
+			// console.log(userName);
+			// console.log(msg.value);
+			let msg = document.getElementById("msg");
+			var settings = {
+				"async": true,
+				"crossDomain": true,
+				"url": window.location.href + "chatroom",
+				"method": "POST",
+				"headers": {
+					"Content-Type": "application/x-www-form-urlencoded",
+					"cache-control": "no-cache",
+					"Postman-Token": "ccf168ff-e123-460c-b394-59c1b8c13290"
+				},
+				"data": {
+					"userName": userName,
+					"message": msg.value
+				}
+			}
+
+			$.ajax(settings).done(function (response) {
+				check_msg()
+			});
+		}
+
+		function check_msg() {
+			if (userName === null) {
+				let user = document.getElementById("nickname")
+				if (user.value === ""){
+					user.setAttribute("style", "width: 75%; border: 6px solid #ff0000!important");
+					return false;
+				}
+				userName = user.value;
+			}
+			var settings = {
+				"async": true,
+				"crossDomain": true,
+				"url":  window.location.href + "chatroom",
+				"method": "GET",
+				"headers": {
+					"Content-Type": "application/x-www-form-urlencoded",
+					"cache-control": "no-cache",
+					"Postman-Token": "054860d1-eb48-4f55-bcc6-65a7e33b6f59"
+				},
+				"data": {
+					"user1": "mirkan",
+					"message": "selam"
+				}
+			}
+
+			$.ajax(settings).done(function (response) {
+				//console.log(response.length)
+				//userName = response[0].user1;
+				var chatBox = document.getElementById("chat-box");
+				if (response.length > 0) {
+					if (chatBox.children !== undefined) {
+						if (chatBox.children.length > 0) {
+							// for (let i=0; i<chatBox.children.lenght; i++) {
+							// }
+							while (chatBox.children.length > 0) {
+								chatBox.children[0].remove();
+							}
+					}
+				}
+					response.forEach(e => {
+						var node = document.createElement("LI");
+						var element = document.createElement("b");
+  						element.innerHTML = e.userName;
+						var textnode = document.createTextNode(": " + e.message);
+						node.appendChild(element);
+						node.appendChild(textnode);
+						if (e.userName !== userName) {
+							node.setAttribute("style", "align-self: flex-start")
+						}
+						chatBox.appendChild(node);
+						chatBox.style.opacity = 1;
+					})	
+				 };
+				 try {
+					changeTemplate();
+				 } catch(err) {
+					return
+				 }
+			});
+			
+		}
+		setInterval(function(){ 
+			if (userName !== null) {
+				check_msg(); 
+			}
+		}, 5000);
+	</script>
+</body>
+</html>
