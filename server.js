@@ -5,10 +5,20 @@ var express = require('express'),
   mongoose = require('mongoose'),
   Task = require('./api/models/apiModels'), //created model loading here
   bodyParser = require('body-parser');
+  uristring = 
+    process.env.MONGOLAB_URI ||
+    process.env.MONGOHQ_URL || 
+    'mongodb://localhost/Tododb';
   
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/Tododb'); 
+mongoose.connect(uristring, function (err, res) {
+  if (err) {
+    console.log ('ERROR connecting to: ' + uristring + '. ' + err);
+  } else {
+    console.log ('Succeeded connected to: ' + uristring);
+  }
+}); 
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,7 +36,7 @@ app.get('/', function(req, res) {
 app.listen(port);
 
 
-console.log('todo list RESTful API server started on: ' + port);
+console.log('xhrchat RESTful API server started on: ' + port);
 
 app.use(function(req, res) {
     res.status(404).send({url: req.originalUrl + ' not found'})
