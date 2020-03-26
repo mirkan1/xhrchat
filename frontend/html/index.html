@@ -127,15 +127,15 @@
 			if (first) {
 				$.ajax(settings).done(function (response) {
 					var chatBox = document.getElementById("chat-box");
-					console.log(chatBox)
+					console.log(response)
 					if (response.length > 0) {
-						if (chatBox.children !== undefined) {
-							if (chatBox.children.length > 0) {
-								while (chatBox.children.length > 0) {
-									chatBox.children[0].remove();
-								}
-						}
-					}
+					// 	if (chatBox.children !== undefined) {
+					// 		if (chatBox.children.length > 0) {
+					// 			while (chatBox.children.length > 0) {
+					// 				chatBox.children[0].remove();
+					// 			}
+					// 	}
+					// }
 						response.forEach(e => {
 							var node = document.createElement("h6");
 							var element = document.createElement("b");
@@ -166,6 +166,7 @@
 			} else {
 				$.ajax(settings).done(function (response) {
 					var chatBox = document.getElementById("chat-box");
+					console.log(chatBox.children)
 					if (response.length > 0) {
 						var len = response.length
 						for (let i=chatBox.children.length; i < len; i++) {
@@ -187,6 +188,7 @@
 							}
 							chatBox.appendChild(node);
 							chatBox.scrollTop = chatBox.scrollHeight;
+							chatBox.style.opacity = 1;
 						}
 					};
 					try {
