@@ -9,6 +9,10 @@ I was thinking about chats in the browser, how can it work effectively withou we
 ## Usage
 
 Tested with node.js
+## Required
+"nodemon": "^2.0.2" // npm install nodemon
+mongoDB need to be installed in your computer
+node.js
 #### Server:
  * ``npm start```
 #### Client:
