@@ -1,5 +1,6 @@
 Simple chat based on ajax XMLHttpRequest (XHR)
 ==========
+http://xhrchat.herokuapp.com/
 
 PIC1
 ![alt text](https://github.com/mirkan1/xhrchat/blob/master/frontend/assets/xhr2.PNG?raw=true)
