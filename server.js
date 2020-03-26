@@ -6,6 +6,7 @@ var express = require('express'),
   Task = require('./api/models/apiModels'), //created model loading here
   bodyParser = require('body-parser');
   uristring = 
+    process.env.MONGODB_URI ||
     process.env.MONGOLAB_URI ||
     process.env.MONGOHQ_URL || 
     'mongodb://localhost/Tododb';
