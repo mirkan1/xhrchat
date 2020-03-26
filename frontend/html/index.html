@@ -23,29 +23,36 @@
 					<br>
 					<br>
 					<label>Nickname:</label>
-					<input type="text" id="nickname" value="" style="width: 75%">
-					<button id="send-btn" onclick="check_msg()">join</button>
+					<input type="text" id="nickname" value="" style="width: 60%">
+					<button id="send-btn" onclick="check_msg(true)">join</button>
 				</div>
 		
 				<div id="fail-box"></div>
-				<div id="chat-box" style="
-					opacity: 0;
-					font-family: Verdana, sans-serif;
-					box-sizing: inherit;
-					display: block;
-					color: #000!important;
-					border: aqua;
-					background-color: #ddffff!important;
-					line-height: 1.5;
-					font-size: 15px;
-					padding: 0.01em 16px;
-					border-color: #2196F3!important;
-					border: 6px solid #ccc!important;
-					border-radius: 10px;
-					display: flex;
-					flex-direction: column;
-					align-items: flex-end;"
-				"></div>
+				<div id="chat-box" 
+					style="
+						opacity: 0;
+						font-family: Verdana, sans-serif;
+						box-sizing: inherit;
+						display: block;
+						color: #000!important;
+						border: aqua;
+						background-color: #ddffff!important;
+						line-height: 1.5;
+						font-size: 15px;
+						padding: 0.01em 16px;
+						border-color: #2196F3!important;
+						border: 6px solid #ccc!important;
+						border-radius: 10px;
+						display: flex;
+						flex-direction: column;
+						align-items: flex-end;
+						background-color: white;
+						border: 1px solid black;
+						padding: 2px;
+						overflow-x: hidden;
+						height: 750px;
+					"
+				></div>
 				<div id="message-box" style="opacity: 0; margin: 10px 0;">
 					<label>chat:</label>
 					<input type="text" id="msg" value="" style="width: 75%">
@@ -66,8 +73,6 @@
 		}
 
 		function send_msg() {
-			// console.log(userName);
-			// console.log(msg.value);
 			let msg = document.getElementById("msg");
 			var settings = {
 				"async": true,
@@ -90,7 +95,11 @@
 			});
 		}
 
-		function check_msg() {
+		function get_all_messages() {
+			
+		}
+
+		function check_msg(first=false) {
 			if (userName === null) {
 				let user = document.getElementById("nickname")
 				if (user.value === ""){
@@ -115,40 +124,80 @@
 				}
 			}
 
-			$.ajax(settings).done(function (response) {
-				//console.log(response.length)
-				//userName = response[0].user1;
-				var chatBox = document.getElementById("chat-box");
-				if (response.length > 0) {
-					if (chatBox.children !== undefined) {
-						if (chatBox.children.length > 0) {
-							// for (let i=0; i<chatBox.children.lenght; i++) {
-							// }
-							while (chatBox.children.length > 0) {
-								chatBox.children[0].remove();
-							}
-					}
-				}
-					response.forEach(e => {
-						var node = document.createElement("LI");
-						var element = document.createElement("b");
-  						element.innerHTML = e.userName;
-						var textnode = document.createTextNode(": " + e.message);
-						node.appendChild(element);
-						node.appendChild(textnode);
-						if (e.userName !== userName) {
-							node.setAttribute("style", "align-self: flex-start")
+			if (first) {
+				$.ajax(settings).done(function (response) {
+					var chatBox = document.getElementById("chat-box");
+					console.log(chatBox)
+					if (response.length > 0) {
+						if (chatBox.children !== undefined) {
+							if (chatBox.children.length > 0) {
+								while (chatBox.children.length > 0) {
+									chatBox.children[0].remove();
+								}
 						}
-						chatBox.appendChild(node);
-						chatBox.style.opacity = 1;
-					})	
-				 };
-				 try {
-					changeTemplate();
-				 } catch(err) {
-					return
-				 }
-			});
+					}
+						response.forEach(e => {
+							var node = document.createElement("h6");
+							var element = document.createElement("b");
+							if (e.userName !== userName) {
+								element.innerHTML = e.userName;
+								var textnode = document.createTextNode(": " + e.message);
+								node.appendChild(element);
+								node.appendChild(textnode);
+								node.setAttribute("style", "align-self: flex-start; padding-right: 50%; text-align: left;")
+							} else {
+								node.setAttribute("style", "padding-left: 50%; text-align: right;")
+								element.innerHTML = e.userName;
+								var textnode = document.createTextNode(e.message + " :");
+								node.appendChild(textnode);
+								node.appendChild(element);
+							}
+							chatBox.appendChild(node);
+							chatBox.scrollTop = chatBox.scrollHeight;
+							chatBox.style.opacity = 1;
+						})	
+					};
+					try {
+						changeTemplate();
+					} catch(err) {
+						return
+					}
+				});
+			} else {
+				$.ajax(settings).done(function (response) {
+					var chatBox = document.getElementById("chat-box");
+					if (response.length > 0) {
+						var len = response.length
+						for (let i=chatBox.children.length; i < len; i++) {
+							let e = response[i]
+							var node = document.createElement("h6");
+							var element = document.createElement("b");
+							if (e.userName !== userName) {
+								element.innerHTML = e.userName;
+								var textnode = document.createTextNode(": " + e.message);
+								node.appendChild(element);
+								node.appendChild(textnode);
+								node.setAttribute("style", "align-self: flex-start; padding-right: 50%; text-align: left;")
+							} else {
+								node.setAttribute("style", "padding-left: 50%; text-align: right;")
+								element.innerHTML = e.userName;
+								var textnode = document.createTextNode(e.message + " :");
+								node.appendChild(textnode);
+								node.appendChild(element);
+							}
+							chatBox.appendChild(node);
+							chatBox.scrollTop = chatBox.scrollHeight;
+						}
+					};
+					try {
+						changeTemplate();
+					} catch(err) {
+						return
+					}
+				});
+
+			}
+
 			
 		}
 		setInterval(function(){ 
