@@ -25,6 +25,6 @@ node.js
 ![alt text](https://github.com/mirkan1/xhrchat/blob/master/frontend/assets/xhr3.PNG?raw=true)
 
 ## TODO
-*Messages will be deleted every 24 hours
-*Login section
-*More than 1 chatroom
+* Messages will be deleted every 24 hours
+* Login section
+* More than 1 chatroom
