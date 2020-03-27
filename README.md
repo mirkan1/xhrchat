@@ -18,8 +18,8 @@ node.js
 #### Client:
  * Open your browser, write your IP:3000 and start chatting!
 
-PIC1
+==========
 ![alt text](https://github.com/mirkan1/xhrchat/blob/master/frontend/assets/xhr2.PNG?raw=true)
 
-PIC2
+==========
 ![alt text](https://github.com/mirkan1/xhrchat/blob/master/frontend/assets/xhr3.PNG?raw=true)
