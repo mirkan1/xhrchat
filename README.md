@@ -28,3 +28,5 @@ node.js
 * Messages will be deleted every 24 hours
 * Login section
 * More than 1 chatroom
+* Enter should send the messages
+* After message sent, the input should be cleaned
